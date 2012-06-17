@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<configdata>
+    <nav>
+        <home>
+            <label>Home</label>
+            <uri>/</uri>
+            <pages>
+                <about>
+                    <label>Admin</label>
+                    <uri>/Admin/index</uri>
+                </about>
+                <contact>
+                    <label>About</label>
+                    <uri>/Index/about</uri>
+                </contact>
+            </pages>
+        </home>
+    </nav>    
+</configdata>
