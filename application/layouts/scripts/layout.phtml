@@ -1,4 +1,10 @@
-<?php $this->doctype(); ?>
+<?php
+$this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+$this->headTitle()->setSeparator(' - ');
+$this->headTitle('Estacionamento');
+echo $this->headLink()->prependStylesheet($this->baseUrl().'/css/site.css');
+echo $this->doctype(); ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,6 +38,12 @@
                 padding-top: 10px;
             }
 
+            div.bottom {
+                position: absolute;
+                bottom: 0px;
+                width: 100%;
+                background: #ccc;
+            }
         </style>
     </head>
     <body>
@@ -53,8 +65,7 @@
             <?= $this->layout()->content; ?>
         </div>
         <div class="bottom">
-            <div>TODO write content</div>
-
+            <div>Layout padrão</div>
         </div>
     </body>
 </html>
