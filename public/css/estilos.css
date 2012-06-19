@@ -1,36 +1,102 @@
-*{
+			*{
                 padding: 0 0; margin: 0 0;
-                
             }
 			
 			.geral{
 			width:980px;
 			height:auto;
 			margin:auto;
-			border:1px solid;
 			}
 			
-            div.topnav ul, .topnav ul li{
-                display: inline;
-                padding: 0px;
-            }
-
-            div.topnav ul li a{
-                border-width: 1px 1px 0 1px;
-                border-style: solid;
-                border-color: #000;
-                padding: 5px;
-                background: #fff;
-            }
-            div.header{
-                background: #eee;
+			.header{
                 padding-bottom: 5px;
+				width:980px;
+				height:150px;
+				border-bottom:2px solid #015697;
+				float:left;
             }
-            
-            div.header > h3{
-                margin-bottom: 10px;
-                padding-top: 10px;
-            }
+			
+			.logo{
+			float:left;
+			margin:20px;
+			}
+			
+.menu{
+	width:550px;
+	border:1px solid;
+	height:40px;
+	float:left;
+}
+	
+.menu ul{
+	width:550px;
+	height:40px;
+	margin:0;
+	padding:0;
+}
+
+.menu ul li {
+    background-image: url("/images/abaMenu.png");
+    background-repeat: no-repeat;
+    display: inline;
+    float: left;
+    height: 40px;
+    padding: 10px 0 0;
+    text-align: center;
+    width: 124px;
+}
+
+.menu ul li a {
+    color: #FFFFFF;
+    font-family:calibri, arial, tahoma;
+    font-size: 16px;
+    margin: 0 10px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.content{
+width:980px;
+padding:20px;
+height:auto;
+float:left;
+}
+
+.content label{
+    color: #666;
+    font-family:calibri, arial, tahoma;
+    font-size: 20px;
+    margin:30px 10px;
+    text-decoration: none;
+	float:left;
+	font-weight:bold;
+}
+
+#ticket-element input{
+background-image:url('/images/bgInput.png');
+background-repeat:no-repeat;
+width:204px;
+height:44px;
+border:none;
+padding:10px;
+color:#666;
+font-family:calibri, arial, tahoma;
+font-size:14px;
+float:left;
+background-color:transparent;
+margin:20px;
+}
+
+#submit-element input{
+background-image:url('/images/btPagar.png');
+background-repeat:no-repeat;
+width:204px;
+height:44px;
+border:none;
+background-color:transparent;
+float:left;
+margin:0;
+}
 
             div.bottom {
                 position: absolute;

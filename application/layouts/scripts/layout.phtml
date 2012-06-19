@@ -12,10 +12,10 @@ echo $this->doctype(); ?>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
+	<div class="geral">
         <div class="header">
-			<img src="/images/logo.png"/>
-            <?= "<h3>Estacionamento</h3>"; ?>
-            <div class="topnav">
+			<img src="/images/logo.png" class="logo"/>
+            <div class="menu">
                 <?= $this->navigation()->menu(); ?>
             </div>
             <div class="breadcrumbs">
@@ -33,5 +33,6 @@ echo $this->doctype(); ?>
         <div class="bottom">
             <div>Layout padrão</div>
         </div>
+		</div>
     </body>
 </html>
