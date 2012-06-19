@@ -4,12 +4,17 @@ class AdminController extends Zend_Controller_Action {
 
     public function init() {
         /* Initialize action controller here */
-        
-//         $uri =  $this->_request->getPathInfo();
-//        die($uri);
     }
 
     public function indexAction() {
+
+
+
+        $auth = new Application_Form_AuthFuncionario();
+        $this->view->auth = $auth;
+        
+        echo $this->getRequest()->getParam("cartao");
+//        var_dump($_POST);
         
     }
 

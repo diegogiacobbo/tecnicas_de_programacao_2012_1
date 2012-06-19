@@ -16,7 +16,7 @@ class IndexController extends Zend_Controller_Action {
 
 
         $auth = new Application_Form_Auth();
-        echo $auth;
+        $this->view->auth = $auth;
         
 //        $router = new Zend_View_Helper_Url();
 //		echo $router->url(array(
@@ -32,7 +32,6 @@ class IndexController extends Zend_Controller_Action {
             if (self::verificaTicket($id) == true) {
                 Zend_Session::setId($id);
                 echo "<br />validado!<br /><br />";
-//                echo Zend_Session::getId();
                 self::total();
             }else
                 echo "Não existem ticket's com essa numeração!";
