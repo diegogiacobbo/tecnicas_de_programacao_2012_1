@@ -35,8 +35,8 @@ class IndexController extends Zend_Controller_Action {
             if (self::verificaTicket($id) == true) {
                 Zend_Session::setId($id);
                 echo "<br />validado!<br /><br />";
-                echo Zend_Session::getId();
-                echo self::total();
+//                echo Zend_Session::getId();
+                self::total();
             }else
                 echo "Não existem ticket's com essa numeração!";
         }
@@ -73,22 +73,36 @@ class IndexController extends Zend_Controller_Action {
         foreach ($ticket as $key) {
             if (Zend_Session::getId() == $key['id']) {
 
-                $day1 = new Zend_Date($key['data_entrada'], 'YYYY-mm-dd HH:mm:ss');
-                $day2 = new Zend_Date($key['data_saida'], 'YYYY-mm-dd HH:mm:ss');
-                
-//                if($day2->getDay() >=  $day1->getDay()){
-                $dateDiff = $day2->getDate()->getHour() - $day1->getDate()->getDate()->getHour();
-                
-                echo $day2->getDate()->getHour()."<br />";
-                echo $day1->getDate()->getHour()."<br />";
-                echo $dateDiff."<br />";
-//                }
-//                else{
-                    echo $day2->getDay() ."-" . $day1->getDay();
-                    
-//                }
-                $days = (($dateDiff / 24) / 24); //3600
-                return $days;
+                $dt_entrada = new Zend_Date($key['data_entrada'], 'YYYY-mm-dd HH:mm:ss');
+                $dt_saida = new Zend_Date($key['data_saida'], 'YYYY-mm-dd HH:mm:ss');
+
+                echo $dt_entrada . "<br />";
+                echo $dt_saida . "<br />";
+
+                if (substr($dt_saida->getDay(), 0, -17) > substr($dt_entrada->getDay(), 0, 2)) {
+                    (int) $date_diff = (int) substr($dt_saida->getDay(), 0, -17) - (int) substr($dt_entrada->getDay(), 0, 2);
+                    echo "(R$ " . $date_diff * 50 . ")";
+                } else {
+                    (float) $hr_saida = floatval(substr($dt_saida->getHour(), -8, -6));
+                    (float) $hr_entrada = floatval(substr($dt_entrada->getHour(), -8, -6));
+                    (float) $min_saida = floatval(substr($dt_saida->getMinute(), -5, -3));
+                    (float) $min_entrada = floatval(substr($dt_entrada->getMinute(), -5, -3));
+
+                    (float) $date_diff = floatval($hr_saida - $hr_entrada) + floatval($min_saida - $min_entrada);
+
+                    if ((float) (0.33) < (float) $date_diff && $date_diff <= 3) {
+                        echo "(R$ 3,50) <br />";
+                        echo $date_diff;
+                    } else if ((float) $date_diff <= (float) (0.33)) {
+                        echo "(R$ 0,00) <br />";
+                        echo $date_diff;
+                    } else if ($date_diff > 3) {
+                        echo "(R$ 10,00) <br />";
+                        echo $date_diff;
+                    }
+                }
+//                $days = (($dateDiff / 24) / 24); //3600
+                return (float) $date_diff;
             }
         }
     }
