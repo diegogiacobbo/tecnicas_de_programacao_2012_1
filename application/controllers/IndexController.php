@@ -17,10 +17,7 @@ class IndexController extends Zend_Controller_Action {
 
         $auth = new Application_Form_Auth();
         echo $auth;
-
-
-
-
+        
 //        $router = new Zend_View_Helper_Url();
 //		echo $router->url(array(
 //			'controller' => 'Admin',
