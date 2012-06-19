@@ -22,9 +22,8 @@ n desaprende...
     padding-bottom: 5px;
     width:980px;
     height:150px;
-    border-bottom:2px solid #015697;
     float:left;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .logo{
@@ -33,10 +32,12 @@ n desaprende...
 }
 
 .menu{
-    width:550px;
+    width:70%;
     height:40px;
     float:left;
-    margin-top: 115px !important;
+    margin-top: 98px !important;
+	border-bottom:2px solid #015697;
+	padding: 0 10px;
 }
 
 .menu ul{
@@ -46,13 +47,13 @@ n desaprende...
     padding:0;
 }
 
-
 .menu ul li {
     background-image: url("/images/abaMenu.png");
     background-repeat: no-repeat;
     display: inline;
     float: left;
     height: 40px;
+    margin: 0 2px;
     padding: 10px 0 0;
     text-align: center;
     width: 124px;
@@ -63,17 +64,14 @@ n desaprende...
     margin-top: -29px;
 }
 
-
 .menu ul ul{
     margin-left: 124px;
 }
 
 .menu ul li a {
     color: #FFFFFF;
-    font-family:calibri, arial, tahoma;
+    font-family: calibri,arial,tahoma;
     font-size: 16px;
-    margin: 0 10px;
-    text-align: center;
     text-decoration: none;
 }
 
@@ -120,7 +118,7 @@ n desaprende...
     margin:0;
 }
 
-div.bottom {
+.bottom {
     position: absolute;
     bottom: 0px;
     width: 100%;
