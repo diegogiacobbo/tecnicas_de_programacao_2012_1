@@ -1,9 +1,6 @@
 <?php
 
-@require (APPLICATION_PATH . '/models/persistence/PDOConnectionFactory.php');
-$db = new PDOConnectionFactory();
-
-class Application_Model_Cartao extends Zend_Db_Table {
+class Application_Model_Cartao {
 
     protected $_name = "cartao";
     public $id;
