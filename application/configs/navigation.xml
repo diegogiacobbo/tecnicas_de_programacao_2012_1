@@ -11,7 +11,7 @@ and open the template in the editor.
             <pages>
                 <about>
                     <label>Admin</label>
-                    <uri>/Admin/index</uri>
+                    <uri>/Admin</uri>
                 </about>
                 <contact>
                     <label>About</label>
