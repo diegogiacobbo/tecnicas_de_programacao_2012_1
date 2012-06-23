@@ -1,10 +1,24 @@
-<div class="link">
+<?php
+$session = new Zend_Session_Namespace('session');
+?>
+<div class="login">
     <a href="<?= $this->logout ?>">logoff</a>
 </div>
-<div class="view_content">
-
+<div class="view_auth">
     <?= $this->auth ?>
 </div>
-<div class="logado">
-    <?= $this->logado ?>
+<div class="logado_deslogado">
+    <?= $this->str_log ?>
 </div>
+<div class="error_login">
+    <?= $this->err_log ?>
+</div>
+<?php if (isset($session->str_id)) { ?>
+    <div class="functionality">
+        <ul>
+            <li><a href="<?= $this->utilizacoes ?>">Total recebido de pagamentos</a></li>
+            <li><a href="<?= $this->tickets_pagos ?>">Número de tickets pagos</a></li>
+            <li><a href="<?= $this->estadias ?>">Número de utilizações dos cartões especiais</a></li>
+        </ul>
+    </div>
+<?php } ?>

@@ -1,5 +1,8 @@
 <?php
 
+require_once ('Zend/Loader.php');
+require_once ('Zend/Session.php');
+
 class AdminController extends Zend_Controller_Action {
 
     public function init() {
@@ -8,73 +11,121 @@ class AdminController extends Zend_Controller_Action {
 
     public function indexAction() {
 
-        require_once('Zend/Session.php');
+        Zend_Session::setOptions(array('save_path' => APPLICATION_PATH . '/sessions/'));
+        Zend_Session::start();
 
-        $session = new Zend_Session_Namespace('identity');
+        $session = new Zend_Session_Namespace('session');
+        $session->setExpirationSeconds(3600);
 
-        $session->country = 'Australia';
+        $this->view->err_log = "";
 
-        // output the value
-        echo sprintf('Your country is %s', $session->country);
+        $id = $this->getRequest()->getParam("cartao");
+        $logout = $this->getRequest()->getParam('logout');
+        $utilizacoes = $this->getRequest()->getParam('utilizacoes');
+        $tickets_pagos = $this->getRequest()->getParam('tickets_pagos');
+        $estadias = $this->getRequest()->getParam('estadias');
 
-        // checking if a value is set
-//        $hash = $this->getRequest()->getParam("csrf");
-//        var_dump($_SESSION);
-        $_SESSION["str_login"] = "";
-        /**
-         *  Botão logout 
-         *  @return logout, view para o botão de sair da administração
-         */
-        $router = new Zend_View_Helper_Url();
-        $logout = $router->url(array(
-            'controller' => 'Admin',
-            'action' => 'index',
-            'logout' => "out"));
-        $var = $this->getRequest()->getParam('logout');
-        if (is_string($var))
-            self::logout();
 
-        /**
-         *  @return $this->view->logado descrição de como está logado
-         */
-        if ($_SESSION["str_login"] != "Deslogado") {
-            $this->view->logout = $logout;
-            $id = $this->getRequest()->getParam("cartao");
-            $logado = self::login($id);
-            if (!is_array($logado)) {
-                $_SESSION["str_login"] = $logado;
-            } else if (isset($logado)) {
-                $_SESSION["str_login"] = $logado[0]['descricao'] . "<br /><b>Tipo de cartão</b>" . "<br />Logado";
+        if (isset($id)) {
+            Zend_Registry::set('session', $session);
+            if (self::login($id) == true) {
+                $session->str_id = $id;
+            } else {
+                $this->view->err_log = "Cartão inválido!";
             }
-        } else {
-            $auth = new Application_Form_AuthFuncionario();
-            $this->view->auth = $auth;
-            $_SESSION["str_login"] = "Deslogado";
         }
 
-        $this->view->logado = $_SESSION["str_login"];
+        if (isset($logout)) {
+            self::logout();
+        }
+
+        if (isset($utilizacoes)) {
+            self::utilizacoesCartao();
+        }
+
+
+        if (isset($tickets_pagos)) {
+            self::ticketsPagos();
+        }
+
+        if (isset($estadias)) {
+            self::valorPorEstadias();
+        }
 
 
 
-//        var_dump($_SESSION);
+
+        /**
+         *  SUPER 
+         */
+        if (isset($session->str_id)) {
+            $this->view->str_log = "Cartão de @super usuário";
+
+            /**
+             *  @return botao logout
+             */
+            $router = new Zend_View_Helper_Url();
+            $logout = $router->url(array(
+                'controller' => 'Admin',
+                'action' => 'index',
+                'logout' => "out"));
+            $this->view->logout = $logout;
+
+            $estadias = $router->url(array(
+                'controller' => 'Admin',
+                'action' => 'index',
+                'estadias' => "out"));
+            $this->view->estadias = $estadias;
+
+            $tickets_pagos = $router->url(array(
+                'controller' => 'Admin',
+                'action' => 'index',
+                'tickets_pagos' => "out"));
+            $this->view->tickets_pagos = $tickets_pagos;
+
+            $utilizacoes = $router->url(array(
+                'controller' => 'Admin',
+                'action' => 'index',
+                'utilizacoes' => "out"));
+            $this->view->utilizacoes = $utilizacoes;
+
+            if ($this->getRequest()->getParam('logout')) {
+                self::logout();
+            }
+        }
+        /**
+         *  SEM PRIVILÉGIOS
+         */ else {
+            $this->view->str_log = "Sem privilégios";
+            $auth = new Application_Form_AuthFuncionario();
+            $this->view->auth = $auth;
+
+            $this->view->logout = "";
+            $this->view->estadias = "";
+            $this->view->utilizacoes = "";
+        }
     }
 
     public static function login($id) {
-
         $a = new Application_Model_Autentica();
-        $array = array();
-        $array = $a->autenticacao($id);
-        if (isset($array)) {
-            return $array;
-        } else {
-            return "Deslogado";
-        }
+        return $a->autenticacao($id);
     }
 
     public static function logout() {
-        unset($_SESSION['id']);
-        unset($_SESSION['descricao']);
-        $_SESSION["str_login"] = "Deslogado";
+        $session = new Zend_Session_Namespace('session');
+        $session->unsetAll();
+    }
+
+    public static function utilizacoesCartao() {
+        
+    }
+
+    public static function ticketsPagos() {
+        
+    }
+
+    public static function valorPorEstadias() {
+        
     }
 
 }
