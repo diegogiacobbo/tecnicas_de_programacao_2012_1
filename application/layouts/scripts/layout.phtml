@@ -3,6 +3,10 @@ $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 $this->headTitle()->setSeparator(' - ');
 $this->headTitle('Estacionamento');
 echo $this->headLink()->prependStylesheet($this->baseUrl() . '/css/estilos.css');
+echo $this->headLink()->prependStylesheet($this->baseUrl() . '/css/jquery-ui-1.8.21.custom.css');
+echo $this->headScript()->appendFile('js/jquery-1.7.2.min.js');
+echo $this->headScript()->appendFile('js/jquery-ui-1.8.21.custom.min.js');
+echo $this->headScript()->appendFile('js/main.js');
 echo $this->doctype();
 ?>
 
@@ -17,7 +21,7 @@ echo $this->doctype();
             <div class="header">
                 <a href="/"><img src="/images/logo.png" class="logo"/></a>
                 <div class="menu">
-<?= $this->navigation()->menu(); ?>
+                    <?= $this->navigation()->menu(); ?>
                 </div>
                 <div class="breadcrumbs">
                     <?=
@@ -30,7 +34,7 @@ echo $this->doctype();
                 </div>
             </div>
             <div class="content">
-<?= $this->layout()->content; ?>
+                <?= $this->layout()->content; ?>
             </div>
         </div>
         <div class="bottom">

@@ -1,5 +1,7 @@
 <?php
 $session = new Zend_Session_Namespace('session');
+$this->headScript()->prependFile('/js/admin.js');
+        
 ?>
 <div class="login">
     <a href="<?= $this->logout ?>">logoff</a>

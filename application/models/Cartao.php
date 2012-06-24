@@ -2,7 +2,6 @@
 
 class Application_Model_Cartao {
 
-    protected $_name = "cartao";
     public $id;
     public $descricao;
 

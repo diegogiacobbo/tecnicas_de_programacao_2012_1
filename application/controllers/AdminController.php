@@ -13,7 +13,7 @@ class AdminController extends Zend_Controller_Action {
 
         $head = new Zend_View_Helper_HeadLink();
         $head->headLink()->appendStylesheet('/css/admin.css');
-        
+
         Zend_Session::setOptions(array('save_path' => APPLICATION_PATH . '/sessions/'));
         Zend_Session::start();
 
@@ -56,8 +56,6 @@ class AdminController extends Zend_Controller_Action {
         }
 
 
-
-
         /**
          *  SUPER 
          */
@@ -91,10 +89,6 @@ class AdminController extends Zend_Controller_Action {
                 'action' => 'index',
                 'utilizacoes' => "out"));
             $this->view->utilizacoes = $utilizacoes;
-
-            if ($this->getRequest()->getParam('logout')) {
-                self::logout();
-            }
         }
         /**
          *  SEM PRIVILÉGIOS
@@ -120,15 +114,27 @@ class AdminController extends Zend_Controller_Action {
     }
 
     public static function utilizacoesCartao() {
-        
+        $histCartDao = new Application_Model_HistoricoCartaoDAO();
+        $array_hcd = $histCartDao->Lista()->fetchAll(PDO::FETCH_CLASS, "Application_Model_HistoricoCartao");
+        $array_hcd = reset($array_hcd);
+        var_dump($array_hcd);
+        foreach ($array_hcd as $data) {
+//            echo "lagalaga". $data->getData()."</br>";
+        }
     }
 
     public static function ticketsPagos() {
-        
+        $histCartDao = new Application_Model_TicketDAO();
+        $array_hcd = $histCartDao->Lista()->fetchAll(PDO::FETCH_CLASS, "Application_Model_HistoricoCartao");
+        $array_hcd = reset($array_hcd);
+        var_dump($array_hcd);
     }
 
     public static function valorPorEstadias() {
-        
+        $histCartDao = new Application_Model_TicketDAO();
+        $array_hcd = $histCartDao->Lista()->fetchAll(PDO::FETCH_CLASS, "Application_Model_HistoricoCartao");
+        $array_hcd = reset($array_hcd);
+        var_dump($array_hcd);
     }
 
 }

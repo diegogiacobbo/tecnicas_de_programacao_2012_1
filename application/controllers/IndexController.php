@@ -3,13 +3,7 @@
 class IndexController extends Zend_Controller_Action {
 
     public function init() {
-
-//		$uri = $this->_request->getPathInfo();
-//              die($uri);
-//		$activeNav = $this->view->navigation()->findByUri($uri);
-//		$activeNav->active = true;
-//        $funcionario = new Application_Model_Funcionario();
-//        $this->view->entries = $funcionario->fetchAll();
+        //
     }
 
     public function indexAction() {
@@ -17,24 +11,17 @@ class IndexController extends Zend_Controller_Action {
 
         $auth = new Application_Form_Auth();
         $this->view->auth = $auth;
-        
-//        $router = new Zend_View_Helper_Url();
-//		echo $router->url(array(
-//			'controller' => 'Admin',
-//			'action' => 'index',
-//			'id' => 25
-//		));
+
     }
 
     public function pagamentoAction() {
         $id = $this->_getParam("ticket");
         if (isset($id)) {
             if (self::verificaTicket($id) == true) {
-                Zend_Session::setId($id);
                 echo "<br />validado!<br /><br />";
-                self::total();
+                self::total($id);
             }else
-                echo "Não existem ticket's com essa numeração!";
+                echo "Código de barras errado!";
         }
     }
 
@@ -62,12 +49,12 @@ class IndexController extends Zend_Controller_Action {
         return false;
     }
 
-    public static function total() {
+    public static function total($id) {
         $ticket = new Application_Model_Ticket();
         $ticket = $ticket->fetchAll();
 
         foreach ($ticket as $key) {
-            if (Zend_Session::getId() == $key['id']) {
+            if ($id == $key['id']) {
 
                 $dt_entrada = new Zend_Date($key['data_entrada'], 'YYYY-mm-dd HH:mm:ss');
                 $dt_saida = new Zend_Date($key['data_saida'], 'YYYY-mm-dd HH:mm:ss');
