@@ -11,6 +11,9 @@ class AdminController extends Zend_Controller_Action {
 
     public function indexAction() {
 
+        $head = new Zend_View_Helper_HeadLink();
+        $head->headLink()->appendStylesheet('/css/admin.css');
+        
         Zend_Session::setOptions(array('save_path' => APPLICATION_PATH . '/sessions/'));
         Zend_Session::start();
 
