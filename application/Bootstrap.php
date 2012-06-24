@@ -2,6 +2,15 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 
+    protected function _initCurrency() {
+//        $this->locale = $this->getResource('layout');
+//        $this->locale = Zend_Registry::set('locale', "pt_BR");
+//        
+//        $this->locale->getDefault(Zend_Locale::, TRUE);
+//        $currency = new Zend_Currency($this->locale);
+//        return $currency;
+    }
+
     protected function _initViewHelper() {
         $this->bootstrap("layout");
 

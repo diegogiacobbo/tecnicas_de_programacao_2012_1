@@ -22,8 +22,8 @@ class Application_Model_Ticket extends Zend_Db_Table {
         $this->id = $id;
     }
 
-    public function getDescricao() {
-        return $this->descricao;
+    public function getDataEntrada() {
+        return $this->data_entrada;
     }
 
     public function setDataEntrada($data_entrada) {

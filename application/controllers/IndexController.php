@@ -3,15 +3,13 @@
 class IndexController extends Zend_Controller_Action {
 
     public function init() {
-        //
+        
     }
 
     public function indexAction() {
 
-
         $auth = new Application_Form_Auth();
         $this->view->auth = $auth;
-
     }
 
     public function pagamentoAction() {
@@ -19,7 +17,7 @@ class IndexController extends Zend_Controller_Action {
         if (isset($id)) {
             if (self::verificaTicket($id) == true) {
                 echo "<br />validado!<br /><br />";
-                self::total($id);
+                echo "</br>Total a pagar: R$" . self::total($id) . "</br>";
             }else
                 echo "Código de barras errado!";
         }
@@ -30,7 +28,6 @@ class IndexController extends Zend_Controller_Action {
     }
 
     public function sitemapAction() {
-
         $this->view->layout()->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
 
@@ -39,56 +36,68 @@ class IndexController extends Zend_Controller_Action {
 
     public static function verificaTicket($id) {
         $ticket = new Application_Model_Ticket();
-        $ticket = $ticket->fetchAll();
-
-        foreach ($ticket as $key) {
-            if ($id == $key['id']) {
-                return true;
-            }
-        }
-        return false;
+        $ticket_dao = new Application_Model_TicketDAO();
+        $ticket = $ticket_dao->Lista("Select * FROM ticket WHERE id='$id'")->fetchAll(PDO::FETCH_CLASS, "Application_Model_Ticket");
+        $ticket = reset($ticket);
+        if ($id == $ticket->getId())
+            return true;
+        else
+            return false;
     }
 
     public static function total($id) {
+        $ticket_dao = new Application_Model_TicketDAO();
         $ticket = new Application_Model_Ticket();
-        $ticket = $ticket->fetchAll();
+        $ticket = $ticket_dao->Lista("SELECT * FROM ticket WHERE id = '$id'")->fetchAll(PDO::FETCH_CLASS, "Application_Model_Ticket");
+        $ticket = reset($ticket);
 
-        foreach ($ticket as $key) {
-            if ($id == $key['id']) {
+        if ($id == $ticket->getId()) {
 
-                $dt_entrada = new Zend_Date($key['data_entrada'], 'YYYY-mm-dd HH:mm:ss');
-                $dt_saida = new Zend_Date($key['data_saida'], 'YYYY-mm-dd HH:mm:ss');
+            $dt_entrada = new Zend_Date($ticket->getDataEntrada(), 'YYYY-mm-dd HH:mm:ss');
+            $dt_saida = new Zend_Date($ticket->getDataSaida(), 'YYYY-mm-dd HH:mm:ss');
 
-                echo $dt_entrada . "<br />";
-                echo $dt_saida . "<br />";
+            echo $ticket->getDataEntrada() . " - ";
+            echo $ticket->getDataSaida() . "<br />";
 
-                if (substr($dt_saida->getDay(), 0, -17) > substr($dt_entrada->getDay(), 0, 2)) {
-                    (int) $date_diff = (int) substr($dt_saida->getDay(), 0, -17) - (int) substr($dt_entrada->getDay(), 0, 2);
-                    echo "(R$ " . $date_diff * 50 . ")";
-                } else {
-                    (float) $hr_saida = floatval(substr($dt_saida->getHour(), -8, -6));
-                    (float) $hr_entrada = floatval(substr($dt_entrada->getHour(), -8, -6));
-                    (float) $min_saida = floatval(substr($dt_saida->getMinute(), -5, -3));
-                    (float) $min_entrada = floatval(substr($dt_entrada->getMinute(), -5, -3));
+            $valor_total = null;
 
-                    (float) $date_diff = floatval($hr_saida - $hr_entrada) + floatval($min_saida - $min_entrada);
-
-                    if ((float) (0.33) < (float) $date_diff && $date_diff <= 3) {
-                        echo "(R$ 3,50) <br />";
-                        echo $date_diff;
-                    } else if ((float) $date_diff <= (float) (0.33)) {
-                        echo "(R$ 0,00) <br />";
-                        echo $date_diff;
-                    } else if ($date_diff > 3) {
-                        echo "(R$ 10,00) <br />";
-                        echo $date_diff;
-                    }
+            /**
+             *  SE numero de dias maior
+             */if (substr($dt_saida->getDay(), 0, -17) > substr($dt_entrada->getDay(), 0, 2)) {
+                (int) $date_diff = (int) substr($dt_saida->getDay(), 0, -17) - (int) substr($dt_entrada->getDay(), 0, 2);
+                echo "Diferença de <b>dias</b>: ".$date_diff;
+                echo "(R$ " . $date_diff * 50 . ")";
+                $valor_total = $date_diff * 50;
+            }/**
+             *   SE mesmo dia
+             */ else {
+                $date_diff = self::diffData($dt_entrada, $dt_saida);
+                if ((0.33) < $date_diff && $date_diff <= 3) {
+                    echo "Diferença de <b>horas</b>: ".$date_diff." <br />";
+                    $valor_total = 3.5;
+                } else if ($date_diff <= (0.33)) {
+                    echo "Diferença de <b>horas</b>: ".$date_diff." <br />";
+                    echo $date_diff;
+                    $valor_total = 0.0;
+                } else if ($date_diff > 3) {
+                    echo "Diferença de <b>horas</b>: ".$date_diff." <br />";
+                    $valor_total = 10.0;
                 }
-//                $days = (($dateDiff / 24) / 24); //3600
-                return (float) $date_diff;
+                return (float) $valor_total;
             }
         }
     }
+
+    public static function diffData($dt_entrada, $dt_saida) {
+        (float) $hr_saida = floatval(substr($dt_saida->getHour(), -8, -6));
+        (float) $hr_entrada = floatval(substr($dt_entrada->getHour(), -8, -6));
+        (float) $min_saida = floatval(substr($dt_saida->getMinute(), -5, -3));
+        (float) $min_entrada = floatval(substr($dt_entrada->getMinute(), -5, -3));
+
+        return floatval($hr_saida - $hr_entrada) + floatval($min_saida - $min_entrada);
+    }
+    
+    
 
 }
 

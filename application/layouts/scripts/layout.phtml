@@ -2,11 +2,12 @@
 $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 $this->headTitle()->setSeparator(' - ');
 $this->headTitle('Estacionamento');
-echo $this->headLink()->prependStylesheet($this->baseUrl() . '/css/estilos.css');
-echo $this->headLink()->prependStylesheet($this->baseUrl() . '/css/jquery-ui-1.8.21.custom.css');
-echo $this->headScript()->appendFile('js/jquery-1.7.2.min.js');
-echo $this->headScript()->appendFile('js/jquery-ui-1.8.21.custom.min.js');
-echo $this->headScript()->appendFile('js/main.js');
+echo $this->headLink()->prependStylesheet($this->baseUrl() . '/css/jquery-ui-1.8.21.custom.css')
+        ->headLink()->prependStylesheet($this->baseUrl() . '/css/estilos.css');
+
+echo $this->headScript()->prependFile('/js/main.js')
+        ->headScript()->prependFile('/js/jquery-ui-1.8.21.custom.min.js')
+        ->headScript()->prependFile('/js/jquery-1.7.2.min.js');
 echo $this->doctype();
 ?>
 

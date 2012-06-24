@@ -1,7 +1,6 @@
 <?php
 $session = new Zend_Session_Namespace('session');
 $this->headScript()->prependFile('/js/admin.js');
-        
 ?>
 <div class="login">
     <a href="<?= $this->logout ?>">logoff</a>
@@ -16,11 +15,21 @@ $this->headScript()->prependFile('/js/admin.js');
     <?= $this->err_log ?>
 </div>
 <?php if (isset($session->str_id)) { ?>
-    <div class="functionality">
-        <ul>
-            <li><a href="<?= $this->utilizacoes ?>">Total recebido de pagamentos</a></li>
-            <li><a href="<?= $this->tickets_pagos ?>">Número de tickets pagos</a></li>
-            <li><a href="<?= $this->estadias ?>">Número de utilizações dos cartões especiais</a></li>
-        </ul>
+    <div class="manager">
+        <div class="functionality">
+            <ul>
+                <li><a class="utilizacao" href="<?= $this->utilizacoes ?>">Total recebido de pagamentos</a></li>
+                <li><a class="pay" href="<?= $this->tickets_pagos ?>">Número de tickets pagos</a></li>
+                <li><a class="card_star" href="<?= $this->estadias ?>">Número de utilizações dos cartões especiais</a></li>
+            </ul>
+        </div>
+        <div class="random_option">
+            <label>Escolha pesquisa por&nbsp;</label>
+            <select class="selecao_data">
+                <option selected="selected" value="0">...</option>
+                <option value="dia">dia</option>
+                <option value="mes">mês</option>
+            </select> 
+        </div>
     </div>
 <?php } ?>

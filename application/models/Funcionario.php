@@ -1,11 +1,25 @@
 <?php
 
-@require (APPLICATION_PATH . '/models/persistence/PDOConnectionFactory.php');
-$db = new PDOConnectionFactory();
-
 class Application_Model_Funcionario extends Zend_Db_Table {
 
-    protected $_name = "funcionario";
+    protected $id;
+    protected $nome;
+
+    public function Application_Model_Funcionario() {
+        
+    }
+    
+    public function getId(){
+        return $this->id;
+    }
+    
+    public function getNome(){
+        return $this->nome;
+        
+    }
+    public function setNome($nome){
+        $this->nome = $nome;        
+    }
 
 }
 
