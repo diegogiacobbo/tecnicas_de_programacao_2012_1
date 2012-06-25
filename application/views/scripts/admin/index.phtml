@@ -2,9 +2,11 @@
 $session = new Zend_Session_Namespace('session');
 $this->headScript()->prependFile('/js/admin.js');
 ?>
+<?php if (isset($session->str_id)) { ?>
 <div class="login">
     <a href="<?= $this->logout ?>">logoff</a>
 </div>
+<?php } ?>
 <div class="view_auth">
     <?= $this->auth ?>
 </div>
@@ -18,9 +20,9 @@ $this->headScript()->prependFile('/js/admin.js');
     <div class="manager">
         <div class="functionality">
             <ul>
-                <li><a class="utilizacao" href="<?= $this->utilizacoes ?>">Total recebido de pagamentos</a></li>
-                <li><a class="pay" href="<?= $this->tickets_pagos ?>">Número de tickets pagos</a></li>
-                <li><a class="card_star" href="<?= $this->estadias ?>">Número de utilizações dos cartões especiais</a></li>
+                <li><?= $this->form_total_cartao ?></li>
+                <li><?= $this->form_tickets_pagos ?></li>
+                <li><?= $this->form_util_card_func ?></li>
             </ul>
         </div>
         <div class="random_option">

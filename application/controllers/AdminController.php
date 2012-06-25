@@ -25,7 +25,7 @@ class AdminController extends Zend_Controller_Action {
         $nome_funcionario = $this->getRequest()->getParam("user");
         $id = $this->getRequest()->getParam("cartao");
         $logout = $this->getRequest()->getParam('logout');
-        
+
         if (isset($id)) {
             Zend_Registry::set('session', $session);
             $nome_func = self::login($id, $nome_funcionario);
@@ -56,24 +56,15 @@ class AdminController extends Zend_Controller_Action {
                 'action' => 'index',
                 'logout' => "out"));
             $this->view->logout = $logout;
-//
-//            $estadias = $router->url(array(
-//                'controller' => 'Admin',
-//                'action' => 'result',
-//                'estadias' => "out"));
-//            $this->view->estadias = $estadias;
-//
-//            $tickets_pagos = $router->url(array(
-//                'controller' => 'Admin',
-//                'action' => 'result',
-//                'tickets_pagos' => "out"));
-//            $this->view->tickets_pagos = $tickets_pagos;
-//
-//            $utilizacoes = $router->url(array(
-//                'controller' => 'Admin',
-//                'action' => 'result',
-//                'utilizacoes' => "out"));
-//            $this->view->utilizacoes = $utilizacoes;
+
+            $form_total_cartao = new Application_Form_TotalCartao();
+            $this->view->form_total_cartao = $form_total_cartao;
+
+            $form_tickets_pagos = new Application_Form_TicketsPago();
+            $this->view->form_tickets_pagos = $form_tickets_pagos;
+            
+            $form_util_card_func = new Application_Form_UtilizacoesCartaoFuncionario();
+            $this->view->form_util_card_func = $form_util_card_func;
         }
         /**
          *  SEM PRIVILÉGIOS
@@ -127,11 +118,13 @@ class AdminController extends Zend_Controller_Action {
      *      Criar um form pra cara botao  
      */
     public function resultAction() {
-        $utilizacoes = $this->getRequest()->getParam('utilizacoes');
-        $tickets_pagos = $this->getRequest()->getParam('tickets_pagos');
-        $estadias = $this->getRequest()->getParam('estadias');
-        $data_type = $this->getRequest()->getParam('date_type');
+        $utilizacoes = $this->getRequest()->getParam('form_total_cartao');
+        $tickets_pagos = $this->getRequest()->getParam('form_tickets_pago');
+        $estadias = $this->getRequest()->getParam('form_utilizacao_card_func');
         
+        
+        $data_type = $this->getRequest()->getParam('date_type');
+
         if (isset($utilizacoes)) {
             self::utilizacoesCartao();
         }
