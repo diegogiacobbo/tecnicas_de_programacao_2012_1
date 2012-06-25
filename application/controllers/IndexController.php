@@ -10,6 +10,9 @@ class IndexController extends Zend_Controller_Action {
 
         $auth = new Application_Form_Auth();
         $this->view->auth = $auth;
+
+        $ticket = new Application_Form_GerarTicket();
+        $this->view->ticket = $ticket;
     }
 
     public function pagamentoAction() {
@@ -39,10 +42,11 @@ class IndexController extends Zend_Controller_Action {
         $ticket_dao = new Application_Model_TicketDAO();
         $ticket = $ticket_dao->Lista("Select * FROM ticket WHERE id='$id'")->fetchAll(PDO::FETCH_CLASS, "Application_Model_Ticket");
         $ticket = reset($ticket);
-        if ($id == $ticket->getId())
-            return true;
-        else
-            return false;
+        if ($ticket)
+            if ($id == $ticket->getId())
+                return true;
+            else
+                return false;
     }
 
     public static function total($id) {
@@ -65,7 +69,7 @@ class IndexController extends Zend_Controller_Action {
              *  SE numero de dias maior
              */if (substr($dt_saida->getDay(), 0, -17) > substr($dt_entrada->getDay(), 0, 2)) {
                 (int) $date_diff = (int) substr($dt_saida->getDay(), 0, -17) - (int) substr($dt_entrada->getDay(), 0, 2);
-                echo "Diferença de <b>dias</b>: ".$date_diff;
+                echo "Diferença de <b>dias</b>: " . $date_diff;
                 echo "(R$ " . $date_diff * 50 . ")";
                 $valor_total = $date_diff * 50;
             }/**
@@ -73,14 +77,14 @@ class IndexController extends Zend_Controller_Action {
              */ else {
                 $date_diff = self::diffData($dt_entrada, $dt_saida);
                 if ((0.33) < $date_diff && $date_diff <= 3) {
-                    echo "Diferença de <b>horas</b>: ".$date_diff." <br />";
+                    echo "Diferença de <b>horas</b>: " . $date_diff . " <br />";
                     $valor_total = 3.5;
                 } else if ($date_diff <= (0.33)) {
-                    echo "Diferença de <b>horas</b>: ".$date_diff." <br />";
+                    echo "Diferença de <b>horas</b>: " . $date_diff . " <br />";
                     echo $date_diff;
                     $valor_total = 0.0;
                 } else if ($date_diff > 3) {
-                    echo "Diferença de <b>horas</b>: ".$date_diff." <br />";
+                    echo "Diferença de <b>horas</b>: " . $date_diff . " <br />";
                     $valor_total = 10.0;
                 }
                 return (float) $valor_total;
@@ -96,8 +100,26 @@ class IndexController extends Zend_Controller_Action {
 
         return floatval($hr_saida - $hr_entrada) + floatval($min_saida - $min_entrada);
     }
-    
-    
+
+    public function ticketAction() {
+        
+    }
+
+    public static function geracaoCodigoTicket() {
+        return rand(5, 15);
+    }
+
+    public function create($value, $options = array(), $barcodetype = 'code39', $type = 'image') {
+// Somente o texto é obrigatório para a criação
+        $barcodeOptions = array('text' => $value);
+// Junta a configuração padrão e o $options informado, que são os valores de configuração padrão do Zend_Barcode
+        $barcodeOptions = array_merge($barcodeOptions, $options);
+
+// Não obrigatório, para retornar em JPG usa-se: 'imageType' => 'jpg'
+        $rendererOptions = array();
+
+// Para criar uma imagem, faltando só colocar os headers, o padrão de imagem é PNG
+        return Zend_Barcode::render($barcodetype, $type, $barcodeOptions, $rendererOptions);
+    }
 
 }
-

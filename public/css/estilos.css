@@ -118,7 +118,7 @@ n desaprende...
     margin:0;
 }
 
-.bottom {
+div.bottom {
     position: absolute;
     bottom: 0px;
     width: 100%;

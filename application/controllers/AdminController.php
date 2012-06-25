@@ -28,12 +28,11 @@ class AdminController extends Zend_Controller_Action {
 
         if (isset($id)) {
             Zend_Registry::set('session', $session);
-            $nome_func = self::login($id, $nome_funcionario);
-            if (is_string($nome_func)) {
+            $var = self::login($id, $nome_funcionario);
+            if ($var) {
                 $session->str_id = $id;
-                $session->tipo_user = $nome_func;
             } else {
-                $this->view->err_log = "Cartão inválido!";
+                $this->view->err_log = "Usuário inválido!";
             }
         }
 
@@ -45,7 +44,7 @@ class AdminController extends Zend_Controller_Action {
          *  SUPER 
          */
         if (isset($session->str_id)) {
-            $this->view->str_log = "Cartão de @$session->tipo_user usuário";
+            $this->view->str_log = "Logado";
 
             /**
              *  @return botao logout
@@ -62,7 +61,7 @@ class AdminController extends Zend_Controller_Action {
 
             $form_tickets_pagos = new Application_Form_TicketsPago();
             $this->view->form_tickets_pagos = $form_tickets_pagos;
-            
+
             $form_util_card_func = new Application_Form_UtilizacoesCartaoFuncionario();
             $this->view->form_util_card_func = $form_util_card_func;
         }
@@ -82,7 +81,7 @@ class AdminController extends Zend_Controller_Action {
     public static function login($id, $nome_funcionario) {
         $a = new Application_Model_Autentica();
         $user_id = $a->verificaFuncionario($nome_funcionario);
-        return $a->autenticacao($id, $user_id);
+        return $a->autenticacao($user_id);
     }
 
     public static function logout() {
@@ -121,8 +120,8 @@ class AdminController extends Zend_Controller_Action {
         $utilizacoes = $this->getRequest()->getParam('form_total_cartao');
         $tickets_pagos = $this->getRequest()->getParam('form_tickets_pago');
         $estadias = $this->getRequest()->getParam('form_utilizacao_card_func');
-        
-        
+
+
         $data_type = $this->getRequest()->getParam('date_type');
 
         if (isset($utilizacoes)) {
