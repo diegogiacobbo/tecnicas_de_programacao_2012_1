@@ -2,11 +2,13 @@
 $this->title = "Pagamento";
 $this->headTitle($this->title);
 ?>
-<div>
-    <a href=<?=
-$this->url(array(
-    'controller' => 'index',
-    'action' => 'index'
-));
-?>><button>Confirmar pagamento</button></a>
+<div class="allow_pay">
+    <?php if( $this->botao != null ){ ?>
+    <a href=<?= $this->botao ?>>
+        <button>Confirmar pagamento</button>
+    </a>
+    <?php } ?>
+</div>
+<div class="show_log">
+    <?= $this->total ?>
 </div>

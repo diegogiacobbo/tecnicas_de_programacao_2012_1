@@ -1,5 +1,6 @@
 <?php
 
+@require_once ('negocio/AdminManager.php');
 require_once ('Zend/Loader.php');
 require_once ('Zend/Session.php');
 
@@ -23,14 +24,15 @@ class AdminController extends Zend_Controller_Action {
         $this->view->err_log = "";
 
         $nome_funcionario = $this->getRequest()->getParam("user");
-        $id = $this->getRequest()->getParam("cartao");
+        $password = $this->getRequest()->getParam("password");
+        $gerir_card = $this->getRequest()->getParam('gerir_card');
         $logout = $this->getRequest()->getParam('logout');
 
-        if (isset($id)) {
+        if (isset($password)) {
             Zend_Registry::set('session', $session);
-            $var = self::login($id, $nome_funcionario);
+            $var = self::login($password, $nome_funcionario);
             if ($var) {
-                $session->str_id = $id;
+                $session->str_id = $nome_funcionario;
             } else {
                 $this->view->err_log = "Usuário inválido!";
             }
@@ -44,7 +46,7 @@ class AdminController extends Zend_Controller_Action {
          *  SUPER 
          */
         if (isset($session->str_id)) {
-            $this->view->str_log = "Logado";
+            $this->view->str_log = "Logado como $session->str_id";
 
             /**
              *  @return botao logout
@@ -55,6 +57,12 @@ class AdminController extends Zend_Controller_Action {
                 'action' => 'index',
                 'logout' => "out"));
             $this->view->logout = $logout;
+
+            $gerir_card = $router->url(array(
+                'controller' => 'Admin',
+                'action' => 'cartao',
+                'gerir_card' => "$session->str_id"));
+            $this->view->gerir_card = $gerir_card;
 
             $form_total_cartao = new Application_Form_TotalCartao();
             $this->view->form_total_cartao = $form_total_cartao;
@@ -78,39 +86,15 @@ class AdminController extends Zend_Controller_Action {
         }
     }
 
-    public static function login($id, $nome_funcionario) {
+    public static function login($password, $nome_funcionario) {
         $a = new Application_Model_Autentica();
         $user_id = $a->verificaFuncionario($nome_funcionario);
-        return $a->autenticacao($user_id);
+        return $a->autenticacao($user_id, $password);
     }
 
     public static function logout() {
         $session = new Zend_Session_Namespace('session');
         $session->unsetAll();
-    }
-
-    public static function utilizacoesCartao() {
-        $histCartDao = new Application_Model_HistoricoCartaoDAO();
-        $array_hcd = $histCartDao->Lista()->fetchAll(PDO::FETCH_CLASS, "Application_Model_HistoricoCartao");
-        $array_hcd = reset($array_hcd);
-        var_dump($array_hcd);
-        foreach ($array_hcd as $data) {
-//            echo "lagalaga". $data->getData()."</br>";
-        }
-    }
-
-    public static function ticketsPagos() {
-        $histCartDao = new Application_Model_TicketDAO();
-        $array_hcd = $histCartDao->Lista()->fetchAll(PDO::FETCH_CLASS, "Application_Model_HistoricoCartao");
-        $array_hcd = reset($array_hcd);
-        var_dump($array_hcd);
-    }
-
-    public static function valorPorEstadias() {
-        $histCartDao = new Application_Model_TicketDAO();
-        $array_hcd = $histCartDao->Lista()->fetchAll(PDO::FETCH_CLASS, "Application_Model_HistoricoCartao");
-        $array_hcd = reset($array_hcd);
-        var_dump($array_hcd);
     }
 
     /**
@@ -120,20 +104,24 @@ class AdminController extends Zend_Controller_Action {
         $utilizacoes = $this->getRequest()->getParam('form_total_cartao');
         $tickets_pagos = $this->getRequest()->getParam('form_tickets_pago');
         $estadias = $this->getRequest()->getParam('form_utilizacao_card_func');
-
-
-        $data_type = $this->getRequest()->getParam('date_type');
+        $diames = $this->getRequest()->getParam('option');
 
         if (isset($utilizacoes)) {
-            self::utilizacoesCartao();
+            AdminManager::utilizacoesCartao();
         }
         if (isset($tickets_pagos)) {
-            self::ticketsPagos();
+            $this->view->result = AdminManager::ticketsPagos($diames);
         }
         if (isset($estadias)) {
-            self::valorPorEstadias();
+            $this->view->result = AdminManager::totalPorEstadias($diames);
         }
     }
 
+   
+    
+    
+    public function cartaoAction() {
+        $user = $this->getRequest()->getParam('gerir_card');
+    }
 }
 

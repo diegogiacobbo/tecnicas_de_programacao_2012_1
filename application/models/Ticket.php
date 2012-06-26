@@ -1,16 +1,15 @@
 <?php
 
-@require (APPLICATION_PATH . '/models/persistence/PDOConnectionFactory.php');
+class Application_Model_Ticket{
 
-class Application_Model_Ticket extends Zend_Db_Table {
+    public $id;
+    public $data_entrada;
+    public $data_saida;
+    public $liberado;
+    public $codigo;
+    public $preco;
 
-    protected $_name = "ticket";
-    protected $id;
-    protected $data_entrada;
-    protected $data_saida;
-    protected $liberado;
-
-    public function Application_Model_Cartao() {
+    public function Application_Model_Ticket() {
         
     }
 
@@ -44,6 +43,27 @@ class Application_Model_Ticket extends Zend_Db_Table {
 
     public function setLiberado($liberado) {
         $this->liberado = $liberado;
+    }
+    
+     public function getPreco() {
+        return $this->preco;
+    }
+
+    public function setPreco($preco) {
+        $this->preco = $preco;
+    }
+    
+    
+    public function getCodigo() {
+        return $this->codigo;
+    }
+
+    public function setCodigo($codigo) {
+        $this->codigo = $codigo;
+    }
+    
+    public function toString(){
+        return " range [".$this->data_entrada." | ".$this->data_saida."] ";
     }
 
 }

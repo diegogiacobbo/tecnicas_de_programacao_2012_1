@@ -3,9 +3,12 @@ $session = new Zend_Session_Namespace('session');
 $this->headScript()->prependFile('/js/admin.js');
 ?>
 <?php if (isset($session->str_id)) { ?>
-<div class="login">
-    <a href="<?= $this->logout ?>">logoff</a>
-</div>
+    <div class="login">
+        <a href="<?= $this->logout ?>">Sair</a>
+    </div>
+    <div class="card">
+        <a href="<?= $this->gerir_card?>">Gerir Cartão</a>
+    </div>
 <?php } ?>
 <div class="view_auth">
     <?= $this->auth ?>
@@ -20,18 +23,10 @@ $this->headScript()->prependFile('/js/admin.js');
     <div class="manager">
         <div class="functionality">
             <ul>
-                <li><?= $this->form_total_cartao ?></li>
-                <li><?= $this->form_tickets_pagos ?></li>
-                <li><?= $this->form_util_card_func ?></li>
+                <li  style="border: 1px solid #ccc"><?= $this->form_total_cartao ?></li>
+                <li  style="border: 1px solid #ccc"><?= $this->form_tickets_pagos ?></li>
+                <li  style="border: 1px solid #ccc"><?= $this->form_util_card_func ?></li>
             </ul>
-        </div>
-        <div class="random_option">
-            <label>Escolha pesquisa por&nbsp;</label>
-            <select class="selecao_data">
-                <option selected="selected" value="0">...</option>
-                <option value="dia">dia</option>
-                <option value="mes">mês</option>
-            </select> 
         </div>
     </div>
 <?php } ?>
